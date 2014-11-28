@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
 	free(str);
 
 	pthread_t* pthreads = (pthread_t*)calloc(m, sizeof(pthread_t));
-
+	// AP: воспользуйтесь gettimeofday
 	clock_t time = clock();
 
 	for(i = 0; i < m; i++) 
@@ -131,7 +131,7 @@ int main(int argc, char* argv[])
 
 		char* number_char = (char*)calloc(1, sizeof(char));
 		sprintf(number_char, "%d", mtx3[i]);
-
+		// AP: аналогично - сначала формируем строку всю - потом ее записываем
 		write_to_buf(number_char, fd);
 		write_to_buf(" ", fd);
 		if((i + 1) % n == 0) write_to_buf("\n", fd);
