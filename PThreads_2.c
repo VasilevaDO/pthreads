@@ -1,4 +1,4 @@
-#include "mylib.h"
+#include "libbuf.h"
 
 
 #define FILE1 "matrix.txt"
