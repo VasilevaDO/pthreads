@@ -1,4 +1,4 @@
-#include "libbuffer.h"
+#include "mylib.h"
 
 
 #define FILE1 "matrix.txt"
@@ -12,13 +12,11 @@ int* mtx3;
 
 void matrix_product(int line, int column) 
 {
-
 	int i = 0;
 	for(i = 0; i < n; i++) 
 	{
 		mtx3[ line * n + column ] += mtx1[ line * n + i ] * mtx2[ i * n + column ];
 	}
-	return;
 }
 
 void* pthread(void* id) 
@@ -55,12 +53,15 @@ int main(int argc, char* argv[])
 
 	char* str = 0;
 
-	str = read_buf(fd);
+	str = read_from_buf(fd);
 
 	long int i;
 	for(i = 0; i < strlen(str); i++) 
 	{
-		if (str[i] == ' ') n++;
+		if (str[i] == ' ') 
+		{
+			n++;
+		}
 	}
 	n /= 2;
 
@@ -123,7 +124,7 @@ int main(int argc, char* argv[])
 		exit(-1);
 	}
 	
-	write_buf("Product of matrixes:\n", fd);	
+	write_to_buf("Product of matrixes:\n", fd);	
 
 	for(i = 0; i < number; i++) 
 	{
@@ -131,19 +132,19 @@ int main(int argc, char* argv[])
 		char* number_char = (char*)calloc(1, sizeof(char));
 		sprintf(number_char, "%d", mtx3[i]);
 
-		write_buf(number_char, fd);
-		write_buf(" ", fd);
-		if((i + 1) % n == 0) write_buf("\n", fd);
+		write_to_buf(number_char, fd);
+		write_to_buf(" ", fd);
+		if((i + 1) % n == 0) write_to_buf("\n", fd);
 
 		free(number_char);
 	}
 
-	write_buf("\nTime: ", fd);
+	write_to_buf("\nTime: ", fd);
 		
 	char* time_char = (char*)calloc(10, sizeof(char));
 	sprintf(time_char, "%g", (double)time/CLOCKS_PER_SEC);
 
-	write_buf(time_char, fd);
+	write_to_buf(time_char, fd);
 
 	free(time_char);
 
@@ -151,8 +152,6 @@ int main(int argc, char* argv[])
 
 	free(mtx1);
 	free(mtx2);
-	free(mtx3);	
-
-    return 0;
+	free(mtx3);
 
 }

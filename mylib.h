@@ -9,5 +9,5 @@
 #include <math.h>
 #include <pthread.h>
 
-char* read_buf(int fd);
-void write_buf(char* str, int fd);
+char* read_from_buf(int fd);
+void write_to_buf(char* str, int fd);
