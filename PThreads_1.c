@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 			
 			char* number_char = (char*)calloc(1, sizeof(char));
 			sprintf(number_char, "%d", number_int);
-
+			// AP: сначала сформируйте целую строчку а затем одним вызовом write_to_buf это запишите
 			write_to_buf(number_char, fd);
 			write_to_buf(" ", fd);
 
