@@ -44,3 +44,50 @@ void write_to_buf(char* str, int fd)
 		}
 	}
 }
+
+/* reverse:  переворачиваем строку s на месте */
+void reverse(char s[])
+{
+     int i, j;
+     char c;
+ 
+     for (i = 0, j = strlen(s)-1; i<j; i++, j--) {
+         c = s[i];
+         s[i] = s[j];
+         s[j] = c;
+     }
+}
+
+void itoa(int n, char s[])
+{
+     int i, sign;
+ 
+     if ((sign = n) < 0)  /* записываем знак */
+         n = -n;          /* делаем n положительным числом */
+     i = 0;
+     do {       /* генерируем цифры в обратном порядке */
+         s[i++] = n % 10 + '0';   /* берем следующую цифру */
+     } while ((n /= 10) > 0);     /* удаляем */
+     if (sign < 0)
+         s[i++] = '-';
+     s[i] = '\0';
+     reverse(s);
+}
+
+void time_start(struct timeval * tv1, struct timezone * tz)
+{
+	gettimeofday(tv1, tz);
+}
+
+long time_stop(struct timeval * tv1, struct timeval * tv2, struct timeval * dtv, struct timezone * tz)
+{ 
+	gettimeofday(tv2, tz);
+	dtv->tv_sec = tv2->tv_sec - tv1->tv_sec;
+	dtv->tv_usec = tv2->tv_usec - tv1->tv_usec;
+	if(dtv->tv_usec<0) 
+	{
+		dtv->tv_sec--; 
+		dtv->tv_usec += 1000000;
+	}
+	return dtv->tv_sec*1000 + dtv->tv_usec/1000;
+}

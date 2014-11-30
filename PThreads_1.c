@@ -26,6 +26,10 @@ int main(int argc, char* argv[])
 	n = atoi(argv[1]);
 
 	int number_int = 0;
+	
+	char* number_char = (char*)calloc(10*(n*n + 1), sizeof(char)); //создали строку (памяти впритык, если все числа двузначные)
+		
+	char tempNumStr[32];
 
 	for(i = 0; i < 2 * n; i++) 
 	{
@@ -34,17 +38,21 @@ int main(int argc, char* argv[])
 
 			rand();
 			number_int = rand() % 100;
+			//printf("%d\n", number_int);
+			itoa(number_int, tempNumStr);
+			/*printf("%s\n___________\n", tempNumStr);
 			
-			char* number_char = (char*)calloc(1, sizeof(char));
-			sprintf(number_char, "%d", number_int);
-
-			write_to_buf(number_char, fd);
-			write_to_buf(" ", fd);
-
-			free(number_char);
+			realloc(number_char, (strlen(number_char) + strlen(tempNumStr) + 1)*sizeof(char));*/
+			strcat(number_char, tempNumStr);
+			strcat(number_char, " ");
+			/*printf("%s\n___________\n", number_char);*/
 		}
 	}
-
+	//printf("%s", number_char);
+	write_to_buf(number_char, fd);
+	
+	free(number_char);
+	
 	if(close(fd) < 0) printf("Can't close a file\n");
 	return 0;
 

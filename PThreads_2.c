@@ -95,9 +95,12 @@ int main(int argc, char* argv[])
 	free(str);
 
 	pthread_t* pthreads = (pthread_t*)calloc(m, sizeof(pthread_t));
-
-	clock_t time = clock();
-
+	
+	struct timeval tv1, tv2, dtv;
+	struct timezone tz;
+	
+	time_start(&tv1, &tz);
+	
 	for(i = 0; i < m; i++) 
 	{
 		if(pthread_create(pthreads + i, (pthread_attr_t *)NULL, pthread, (void*)i) > 0) 
@@ -116,7 +119,7 @@ int main(int argc, char* argv[])
 		}
 	}
 
-	time = clock() - time;
+	int myTime = time_stop(&tv1, &tv2, &dtv, &tz);
 
 	if((fd = open(FILE2, O_WRONLY | O_CREAT | O_EXCL, 0666)) < 0) 
 	{
@@ -125,27 +128,34 @@ int main(int argc, char* argv[])
 	}
 	
 	write_to_buf("Product of matrixes:\n", fd);	
-
-	for(i = 0; i < number; i++) 
+	char* number_char = (char*)calloc(100000*(n*n + 2), sizeof(char)); //создали строку (памяти впритык)
+			
+	char tempNumStr[32];
+	
+	for(i = 0; i < number; i++) //и забиваем её данными, динамически выделяя память
 	{
-
-		char* number_char = (char*)calloc(1, sizeof(char));
-		sprintf(number_char, "%d", mtx3[i]);
-
-		write_to_buf(number_char, fd);
-		write_to_buf(" ", fd);
-		if((i + 1) % n == 0) write_to_buf("\n", fd);
-
-		free(number_char);
-	}
-
-	write_to_buf("\nTime: ", fd);
+		itoa(mtx3[i], tempNumStr); //переводим число в строку
 		
-	char* time_char = (char*)calloc(10, sizeof(char));
-	sprintf(time_char, "%g", (double)time/CLOCKS_PER_SEC);
-
-	write_to_buf(time_char, fd);
-
+		strcat(number_char, tempNumStr);
+		strcat(number_char, " "); //забиваем в строку число и пробел
+		
+		if((i + 1) % n == 0) 
+		{
+			strcat(number_char, "\n");
+		}
+	}
+	
+	strcat(number_char, "\nTime: ");
+	
+	char * time_char = (char*)calloc(10, sizeof(char));
+	itoa(myTime, time_char);
+	
+	strcat(number_char, time_char);
+	
+	write_to_buf(number_char, fd);
+	
+	free(number_char);
+	free(tempNumStr);
 	free(time_char);
 
 	if(close(fd) < 0) printf("Can't close a file-result\n");
