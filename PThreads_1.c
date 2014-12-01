@@ -35,20 +35,14 @@ int main(int argc, char* argv[])
 	{
 		for(j = 0; j < n; j++) 
 		{
-
 			rand();
 			number_int = rand() % 100;
-			//printf("%d\n", number_int);
 			itoa(number_int, tempNumStr);
-			/*printf("%s\n___________\n", tempNumStr);
-			
-			realloc(number_char, (strlen(number_char) + strlen(tempNumStr) + 1)*sizeof(char));*/
 			strcat(number_char, tempNumStr);
 			strcat(number_char, " ");
-			/*printf("%s\n___________\n", number_char);*/
 		}
 	}
-	//printf("%s", number_char);
+
 	write_to_buf(number_char, fd);
 	
 	free(number_char);
