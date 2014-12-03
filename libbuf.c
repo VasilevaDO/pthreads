@@ -37,7 +37,7 @@ void write_to_buf(char* str, int fd)
 	int i;
 	for(i = 0; i < strlen(str); i++)
 	{
-		if (write(fd, str + i, 1) < 0) 
+		if (write(fd, str + i, 1) < 1) 
 		{
 			printf("Can't write a symbol\n");
 			exit(-1);
